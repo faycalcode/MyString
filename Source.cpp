@@ -1,12 +1,6 @@
 #include <iostream>
 #include "MyString.h"
 
-/*
-Excercice : 
-try to make a complete string class (MyString) ofc not using string behind.
-*/
-
-
 int main() {
 
 	try {

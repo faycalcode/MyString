@@ -24,7 +24,7 @@ MyString::MyString(const MyString &str) throw(std::bad_alloc) :
 	std::memcpy(m_head, str.m_head, length() + 1);
 }
 
-MyString::MyString(const char* str = "") throw(std::bad_alloc) :
+MyString::MyString(const char* str) throw(std::bad_alloc) :
 	m_lng(strlen(str)),
 	m_head(new char[length() + 1])
 {
@@ -32,17 +32,6 @@ MyString::MyString(const char* str = "") throw(std::bad_alloc) :
 	std::cout << "const char* constructor: " << str << std::endl;
 #endif
 	std::memcpy(m_head, str, length() + 1);
-}
-
-MyString::MyString(const std::vector<char>& v) throw(std::bad_alloc) :
-	m_lng(v.size()),
-	m_head(new char[length() + 1])
-{
-#ifdef DEBUG
-	std::cout << "vector constructor" << std::endl;
-#endif
-	std::memcpy(m_head, &v[0], length());
-	m_head[length()] = '\0';
 }
 
 MyString::MyString(MyString&& rs) noexcept :

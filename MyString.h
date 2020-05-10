@@ -2,19 +2,17 @@
 #define MYSTRING_H
 #pragma warning( disable : 4290 )
 
-#include <vector>
 #include <iostream>
 
 class MyString{
-	size_t m_lng{0}; //nb of char
-	char* m_head{nullptr}; //everytime i add  char i reallocate
+	size_t m_lng; //nb of char
+	char* m_head; //everytime i add  char i reallocate (no capacity)
 	char* getcin(std::istream&) const throw(std::bad_alloc); //get a char* from the std::cin
 public:
 	/*constructors & destructors*/
 	MyString() throw(std::bad_alloc);
 	MyString(const MyString&) throw(std::bad_alloc);
 	MyString(const char*) throw(std::bad_alloc);
-	MyString(const std::vector<char>&) throw(std::bad_alloc);
 	MyString(MyString&&) noexcept;
 	~MyString();
 
