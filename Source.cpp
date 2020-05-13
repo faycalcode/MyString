@@ -9,7 +9,6 @@ int main() {
 
 		std::cin >> s;
 
-
 	}	
 	catch (const char* e) {
 		std::cout << "Error: " << e <<std::endl;
