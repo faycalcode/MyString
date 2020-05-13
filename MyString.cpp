@@ -5,7 +5,7 @@
 
 /*Construtors*/
 
-MyString::MyString() throw(std::bad_alloc) :
+MyString::MyString():
 	m_lng(0),
 	m_head(new char('\0'))
 {
@@ -14,7 +14,7 @@ MyString::MyString() throw(std::bad_alloc) :
 #endif 
 }
 
-MyString::MyString(const MyString &str) throw(std::bad_alloc) :
+MyString::MyString(const MyString &str):
 	m_lng(str.length()),
 	m_head(new char[length() + 1])
 {
@@ -24,7 +24,7 @@ MyString::MyString(const MyString &str) throw(std::bad_alloc) :
 	std::memcpy(m_head, str.m_head, length() + 1);
 }
 
-MyString::MyString(const char* str) throw(std::bad_alloc) :
+MyString::MyString(const char* str):
 	m_lng(strlen(str)),
 	m_head(new char[length() + 1])
 {
@@ -34,7 +34,7 @@ MyString::MyString(const char* str) throw(std::bad_alloc) :
 	std::memcpy(m_head, str, length() + 1);
 }
 
-MyString::MyString(MyString&& rs) noexcept :
+MyString::MyString(MyString&& rs) noexcept:
 	m_lng(std::move(rs.m_lng)),
 	m_head(std::move(rs.m_head))
 {
@@ -44,7 +44,7 @@ MyString::MyString(MyString&& rs) noexcept :
 	rs.m_head = nullptr;
 }
 
-MyString::~MyString()
+MyString::~MyString() noexcept
 {
 #ifdef DEBUG
 	if (m_head == nullptr)	std::cout << "destructor on stolen object" << std::endl;
@@ -55,12 +55,12 @@ MyString::~MyString()
 
 /*overloads*/
 
-MyString& MyString::operator=(const MyString& other) throw(std::bad_alloc)
+MyString& MyString::operator=(const MyString& other)
 {
 #ifdef DEBUG
 	std::cout << "operator=&" << std::endl;
 #endif
-	if (this != &other) { //prevent self copy
+	if (this != &other) { 
 		delete[] m_head;
 		m_lng = other.length();
 		m_head = new char[length() + 1];
@@ -74,7 +74,7 @@ MyString& MyString::operator=(MyString&& rother) noexcept
 #ifdef DEBUG
 	std::cout << "operator=&&" << std::endl;
 #endif
-	if (this != &rother) { //prevent self move
+	if (this != &rother) { 
 		delete[] m_head;
 		m_lng = std::move(rother.m_lng);
 		m_head = std::move(rother.m_head);
@@ -116,7 +116,7 @@ MyString::operator long() const throw(const char*)
 	return nb;
 }
 
-MyString& MyString::operator+=(const MyString& other) throw(std::bad_alloc)
+MyString& MyString::operator+=(const MyString& other)
 {
 	size_t totalLn = length() + other.length();
 	char* tmp = new char[totalLn + 1];
@@ -165,10 +165,10 @@ void MyString::swap(MyString& other)
 	std::swap(m_lng, other.m_lng);
 }
 
-MyString& MyString::pushback(char c) throw(std::bad_alloc)
+MyString& MyString::pushback(char c)
 {
 	char* tmp = new char[length() + 2];
-	std::memcpy(tmp, m_head, length()); //copie des elements seulement
+	std::memcpy(tmp, m_head, length());
 	tmp[length()] = c;
 	tmp[++m_lng] = '\0';
 	delete[] m_head;
@@ -176,10 +176,10 @@ MyString& MyString::pushback(char c) throw(std::bad_alloc)
 	return *this;
 }
 
-MyString& MyString::pushfront(char c) throw(std::bad_alloc)
+MyString& MyString::pushfront(char c)
 {
 	char* tmp = new char[length() + 2];
-	std::memcpy(tmp + 1, m_head, length() + 1);  //copie le '\0' aussi
+	std::memcpy(tmp + 1, m_head, length() + 1);
 	tmp[0] = c;
 	++m_lng;
 	delete[] m_head;
@@ -187,7 +187,7 @@ MyString& MyString::pushfront(char c) throw(std::bad_alloc)
 	return *this;
 }
 
-char MyString::popback() throw(std::bad_alloc)
+char MyString::popback()
 {
 	char c = '\0';
 	if(length()) 
@@ -204,13 +204,13 @@ char MyString::popback() throw(std::bad_alloc)
 
 }
 
-char MyString::popfront() throw(std::bad_alloc)
+char MyString::popfront()
 {
 	char c = '\0';
 	if (length() > 0) {
 		c = (*this)[0];
 		char* tmp = new char[length()];
-		std::memcpy(tmp, m_head + 1, length()); //copie le '\0' aussi
+		std::memcpy(tmp, m_head + 1, length());
 		--m_lng;
 		delete[] m_head;
 		m_head = tmp;
@@ -225,7 +225,7 @@ std::ostream& operator<<(std::ostream& out, const MyString& s)
 	return out << s.m_head;
 }
 
-std::istream& operator>>(std::istream& in, MyString& s) throw (std::bad_alloc)
+std::istream& operator>>(std::istream& in, MyString& s)
 {
 	char * newstr = s.getcin(in);
 
@@ -234,11 +234,11 @@ std::istream& operator>>(std::istream& in, MyString& s) throw (std::bad_alloc)
 	return in;
 }
 
-MyString operator+(const MyString& s1, const MyString& s2) throw (std::bad_alloc)
+MyString operator+(const MyString& s1, const MyString& s2)
 {
 	MyString s = s1;
 	s += s2;
-	return s; //this is an Rvalue;
+	return s;
 }
 
 bool operator==(const MyString& s1, const MyString& s2) noexcept
@@ -287,7 +287,7 @@ bool operator>=(const MyString& s1, const MyString& s2) noexcept
 	return !(s2 > s1);
 }
 
-char* MyString::getcin(std::istream& in) const throw(std::bad_alloc)
+char* MyString::getcin(std::istream& in) const
 {
 	size_t capacity = 20;
 	char* buffer = new char[capacity];
