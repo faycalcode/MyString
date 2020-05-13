@@ -18,16 +18,16 @@ public:
 	/*overloads*/
 	MyString& operator=(const MyString&);
 	MyString& operator=(MyString&&) noexcept;
-	char operator[](unsigned) const throw(const char*); //for const MyString; 
-	char operator[](unsigned) throw(const char*);
-	operator long() const throw(const char*);
+	char operator[](unsigned) const; //for const MyString; 
+	char operator[](unsigned);
+	operator long() const;
 	MyString& operator+=(const MyString&);
 
 	/*utilities*/
 	size_t length() const noexcept;
 	MyString& toupper();
 	MyString& tolower();
-	char get(unsigned) const throw(const char*); //from 1 to length()
+	char get(unsigned) const; //from 1 to length()
 	void display() const;
 	void swap(MyString&);
 	MyString& pushback(char);

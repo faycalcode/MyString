@@ -84,7 +84,7 @@ MyString& MyString::operator=(MyString&& rother) noexcept
 	return *this;
 }
 
-char MyString::operator[](unsigned index) const throw(const char*)
+char MyString::operator[](unsigned index) const
 {
 #ifdef DEBUG
 	std::cout << "char operator[] const" << std::endl;
@@ -93,7 +93,7 @@ char MyString::operator[](unsigned index) const throw(const char*)
 	else throw "Invalid index";
 }
 
-char MyString::operator[](unsigned index) throw(const char*)
+char MyString::operator[](unsigned index)
 {
 #ifdef DEBUG
 	std::cout << "char& operator[]" << std::endl;
@@ -102,7 +102,7 @@ char MyString::operator[](unsigned index) throw(const char*)
 	else throw "Invalid Index";
 }
 
-MyString::operator long() const throw(const char*)
+MyString::operator long() const
 {
 	long nb = 0;
 	long dec = 1;
@@ -144,7 +144,7 @@ MyString& MyString::tolower()
 	return *this;
 }
 
-char MyString::get(unsigned i) const throw(const char*)
+char MyString::get(unsigned i) const
 {
 	return (*this)[--i];
 }
